@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="T extends any, O extends any">
+import { TheImageProxy } from '~/composables/images'
+
 defineOptions({
   name: 'AboutPage',
 })
@@ -26,15 +28,15 @@ function reset() {
     </div>
 
     <div m10 flex="~ <md:col" items-center>
-      <FloatProxy :style="{ width: `${size}px`, height: `${size}px` }" class="flex-shrink-0 rounded-1/2" />
+      <TheImageProxy :style="{ width: `${size}px`, height: `${size}px` }" class="flex-shrink-0 rounded-1/2" />
       <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laboriosam odio vero, ipsam quidem enim esse? Hic eum reiciendis asperiores magnam alias? Sit, deleniti eius illo obcaecati perspiciatis iure facilis sapiente.</div>
     </div>
 
     <RouterLink
       class="m-3 text-sm btn"
-      to="/"
+      to="/product"
     >
-      Goto Index
+      Goto Product
     </RouterLink>
   </div>
 </template>
