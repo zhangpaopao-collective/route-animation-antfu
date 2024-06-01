@@ -1,17 +1,27 @@
-<script setup lang="ts" generic="T extends any, O extends any">
-import { TheImageProxy } from '~/composables/images'
+<script setup lang="ts">
+import { TheImageProxy } from '../composables/image'
 
-defineOptions({
-  name: 'IndexPage',
-})
+const mode = ref(false)
+const toggle = useToggle(mode)
 </script>
 
 <template>
-  <div flex="~ col items-center">
-    <div i-carbon-campsite inline-block text-4xl />
-
-    <div m-20>
-      <TheImageProxy :attrs="{class: 'h-100 w-100 rounded-10'}"  />
+  <div px6 py-2>
+    <div p2 flex="~ gap-2" justify-center>
+      <button btn @click="toggle()">
+        Toggle Size
+      </button>
+      <router-link btn to="/foo" saturate-0>
+        Navigate
+      </router-link>
     </div>
+    <p pb-10>
+      Shared component across routes with animations
+    </p>
+    <TheImageProxy
+      transition-all duration-800
+      :class="mode ? 'w-50 h-50' : 'w-60 h-30'"
+      :attrs="{class: 'rounded-xl'}"
+    />
   </div>
 </template>

@@ -1,9 +1,9 @@
 import { nanoid } from 'nanoid'
-import { Teleport } from 'vue'
-import type { StyleValue } from 'vue'
-import type { ResolvedStarportOptions, StarportOptions } from './types'
+import type { Component, StyleValue } from 'vue'
+import { Teleport, computed, defineComponent, h, onBeforeUnmount } from 'vue'
 import type { StarportContext } from './context'
 import { createStarportContext } from './context'
+import type { ResolvedStarportOptions, StarportOptions } from './types'
 
 export function createStarport<T extends Component>(
   component: T,
@@ -43,14 +43,12 @@ export function createStarport<T extends Component>(
           width: `${rect.width ?? 0}px`,
           height: `${rect.height ?? 0}px`,
         }
-
         if (!context.value.isVisible || !context.value.el) {
           return {
             ...style,
             display: 'none',
           }
         }
-
         if (context.value.isLanded)
           style.pointerEvents = 'none'
         else
@@ -70,7 +68,6 @@ export function createStarport<T extends Component>(
           ...context.value.props,
           ...context.value.attrs,
         })
-
         return h(
           'div',
           {
@@ -90,7 +87,7 @@ export function createStarport<T extends Component>(
         )
       }
     },
-  }) as T
+  }) as any as T
 
   const proxy = defineComponent({
     props: {
@@ -134,7 +131,7 @@ export function createStarport<T extends Component>(
           : undefined,
       )
     },
-  }) as T
+  }) as any as T
 
   return {
     container,

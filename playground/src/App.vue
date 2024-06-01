@@ -1,32 +1,18 @@
-<script setup lang="ts" generic="T extends any, O extends any">
-import { TheImageContainer } from '~/composables/images'
+<script setup lang="ts">
+import { TheImageContainer } from './composables/image'
 </script>
 
 <template>
-  <main font-sans p="x-4 y-10" text="center gray-700 dark:gray-200">
-    <div>
-      <RouterLink
-        class="m-3 text-sm btn"
-        to="/"
-      >
-        Index
-      </RouterLink>
-      <RouterLink
-        class="m-3 text-sm btn"
-        to="/about"
-      >
-        About
-      </RouterLink>
-      <RouterLink
-        class="m-3 text-sm btn"
-        to="/product"
-      >
-        Product
-      </RouterLink>
-    </div>
-    <RouterView />
-
-    <TheImageContainer />
-    <TheFooter />
+  <main font-sans text="center gray-700 dark:gray-200" relative>
+    <TheNav />
+    <router-view v-slot="{ Component }">
+      <transition name="page-fade">
+        <component
+          :is="Component"
+          absolute left-0 right-0 top-25
+        />
+      </transition>
+    </router-view>
   </main>
+  <TheImageContainer />
 </template>

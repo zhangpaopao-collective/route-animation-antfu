@@ -1,14 +1,33 @@
 <script setup lang="ts">
-const [value, toggle] = useToggle()
+const counter = $ref(Math.round(Math.random() * 100))
 
 onMounted(() => {
+  // eslint-disable-next-line no-console
   console.log('Image Mounted')
 })
 </script>
 
 <template>
-  <div overflow-hidden transition-all @click="toggle()">
-    <img v-if="value" h-full w-full src="../assets/luke-miller.jpg" alt="" srcset="">
-    <img v-else h-full w-full src="../assets/peter-thomas.jpg" alt="" srcset="">
+  <div
+    overflow-hidden w-full h-full
+    transition-all duration-800
+    relative select-none
+    @click="counter += 1"
+    class="the-image"
+  >
+    <img
+      object-cover block w-full h-full
+      src="https://source.unsplash.com/collection/94734566/512x512"
+      bg-gray-400:20
+    >
+    <div
+      absolute pt-5 left-0 right-0 bottom-0
+      bg-gradient-to-t from-black:40 to-transparent
+      text-white font-mono
+      flex items-center justify-center
+      cursor-pointer
+    >
+      {{ counter }}
+    </div>
   </div>
 </template>
