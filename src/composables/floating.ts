@@ -11,26 +11,11 @@ export function createFloating(components: Component) {
   const container = defineComponent({
     setup() {
       // 使用 vueUse
-      // const rect = reactive(useElementBounding(proxyEl))
-
-      const rect = ref<DOMRect | undefined>()
-
-      function update() {
-        rect.value = proxyEl.value?.getBoundingClientRect()
-      }
-
-      useMutationObserver(proxyEl, update, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        characterData: true,
-      })
-
-      useEventListener('resize', update)
+      const rect = ref(useElementBounding(proxyEl))
 
       const fixed: StyleValue = {
         transition: 'all',
-        transitionDuration: '1000ms',
+        transitionDuration: '500ms',
         transitionTimingFunction: 'ease-in-out',
         position: 'fixed',
       }
@@ -38,7 +23,7 @@ export function createFloating(components: Component) {
       const style = computed<StyleValue>(() => {
         if (!rect.value || !proxyEl.value) {
           return {
-            ...fixed,
+            position: 'fixed',
             opacity: 0,
             pointerEvents: 'none',
           }
@@ -51,29 +36,32 @@ export function createFloating(components: Component) {
       })
 
       const landed = ref(false)
-
+      let lifting: any
       function liftOff() {
         landed.value = false
       }
 
       function land() {
-        landed.value = true
+        lifting = setTimeout(() => {
+          landed.value = true
+        }, 600)
       }
 
-      watch(proxyEl, (el) => {
-        liftOff()
-        update()
-        if (el) {
-          setTimeout(() => {
-            land()
-          }, 2000)
-        }
+      watch(proxyEl, (el, prev) => {
+        clearTimeout(lifting)
+
+        // change, start lift
+        if (prev)
+          liftOff()
+
+        // waiting land
+        if (el)
+          land()
       })
 
       return () => {
         const children = h(components, metadata.attrs)
-
-        return h('div', { style: style.value }, children)
+        return h('div', { style: style.value }, [children])
       }
     },
   })
@@ -90,7 +78,7 @@ export function createFloating(components: Component) {
         proxyEl.value = el.value
       })
 
-      onBeforeUnmount(() => {
+      onUnmounted(() => {
         proxyEl.value = undefined
       })
 

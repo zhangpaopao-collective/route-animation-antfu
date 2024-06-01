@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const [value, toggle] = useToggle()
+
+onMounted(() => {
+  console.log('Image Mounted')
+})
 </script>
 
 <template>
