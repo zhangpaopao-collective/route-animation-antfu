@@ -11,7 +11,25 @@ export function createFloating(components: Component) {
 
   const container = defineComponent({
     setup() {
-      const rect = reactive(useElementBounding(proxyEl))
+      // 使用 vueUse
+      // const rect = reactive(useElementBounding(proxyEl))
+
+      const rect = ref<DOMRect | undefined>()
+
+      function update() {
+        rect.value = proxyEl.value?.getBoundingClientRect()
+      }
+
+      useMutationObserver(proxyEl, update, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        characterData: true,
+      })
+
+      useEventListener('resize', update)
+
+      watch(proxyEl, () => update())
 
       const fixed: StyleValue = {
         transition: 'all 0.2s ease-in-out',
@@ -19,7 +37,7 @@ export function createFloating(components: Component) {
       }
 
       const style = computed<StyleValue>(() => {
-        if (!proxyEl.value) {
+        if (!rect.value || !proxyEl.value) {
           return {
             ...fixed,
             opacity: 0,
@@ -28,8 +46,8 @@ export function createFloating(components: Component) {
         }
         return {
           ...fixed,
-          left: `${rect.left || 0}px`,
-          top: `${rect.top || 0}px`,
+          left: `${rect.value.left || 0}px`,
+          top: `${rect.value.top || 0}px`,
         }
       })
 
