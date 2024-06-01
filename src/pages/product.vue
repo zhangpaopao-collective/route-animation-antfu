@@ -7,12 +7,5 @@
     <div flex="~ gap-2">
       this is product
     </div>
-
-    <RouterLink
-      class="m-3 text-sm btn"
-      to="/"
-    >
-      Goto index
-    </RouterLink>
   </div>
 </template>

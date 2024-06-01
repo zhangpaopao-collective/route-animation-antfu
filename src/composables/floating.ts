@@ -1,9 +1,8 @@
 import type { Component, StyleValue } from 'vue'
-import { h } from 'vue'
+import { Teleport, h } from 'vue'
 
 export function createFloating(components: Component) {
   const metadata = reactive({
-    props: {},
     attrs: {},
   })
 
@@ -29,10 +28,10 @@ export function createFloating(components: Component) {
 
       useEventListener('resize', update)
 
-      watch(proxyEl, () => update())
-
       const fixed: StyleValue = {
-        transition: 'all 0.2s ease-in-out',
+        transition: 'all',
+        transitionDuration: '1000ms',
+        transitionTimingFunction: 'ease-in-out',
         position: 'fixed',
       }
 
@@ -51,17 +50,40 @@ export function createFloating(components: Component) {
         }
       })
 
-      return () => h('div', { style: style.value }, h(components, { ...metadata.attrs, ...metadata.props }))
+      const landed = ref(false)
+
+      function liftOff() {
+        landed.value = false
+      }
+
+      function land() {
+        landed.value = true
+      }
+
+      watch(proxyEl, (el) => {
+        liftOff()
+        update()
+        if (el) {
+          setTimeout(() => {
+            land()
+          }, 2000)
+        }
+      })
+
+      return () => {
+        const children = h(components, metadata.attrs)
+
+        return h('div', { style: style.value }, children)
+      }
     },
   })
 
   const proxy = defineComponent({
-    setup(props, ctx) {
+    setup(_, ctx) {
       const el = ref<HTMLElement>()
 
       const attrs = useAttrs()
 
-      metadata.props = props
       metadata.attrs = attrs
 
       onMounted(() => {
