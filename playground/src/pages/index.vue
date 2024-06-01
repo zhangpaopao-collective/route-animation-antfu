@@ -11,7 +11,7 @@ defineOptions({
     <div i-carbon-campsite inline-block text-4xl />
 
     <div m-20>
-      <TheImageProxy h-100 w-100 rounded-10 />
+      <TheImageProxy :attrs="{class: 'h-100 w-100 rounded-10'}"  />
     </div>
   </div>
 </template>

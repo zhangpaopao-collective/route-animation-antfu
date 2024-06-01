@@ -31,7 +31,9 @@ export default defineConfig({
     }),
 
     // https://github.com/posva/unplugin-vue-router
-    VueRouter(),
+    VueRouter({
+      root: __dirname,
+    }),
 
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({

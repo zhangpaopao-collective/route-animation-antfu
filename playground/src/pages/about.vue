@@ -28,7 +28,10 @@ function reset() {
     </div>
 
     <div m10 flex="~ <md:col" items-center>
-      <TheImageProxy :style="{ width: `${size}px`, height: `${size}px` }" class="flex-shrink-0 rounded-1/2" />
+      <TheImageProxy
+        :style="{ width: `${size}px`, height: `${size}px` }"
+        :attrs="{class: 'flex-shrink-0 rounded-1/2'}"
+      />
       <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laboriosam odio vero, ipsam quidem enim esse? Hic eum reiciendis asperiores magnam alias? Sit, deleniti eius illo obcaecati perspiciatis iure facilis sapiente.</div>
     </div>
   </div>
