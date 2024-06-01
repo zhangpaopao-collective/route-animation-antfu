@@ -5,16 +5,18 @@ defineOptions({
 </script>
 
 <template>
-  <div>
+  <div flex="~ col items-center">
     <div i-carbon-campsite inline-block text-4xl />
 
-    <FloatProxy h-100 w-100 rounded-full />
+    <div m-20>
+      <FloatProxy h-100 w-100 rounded-10 />
+    </div>
 
     <RouterLink
       class="m-3 text-sm btn"
       to="/about"
     >
-      go to About
+      Goto About
     </RouterLink>
   </div>
 </template>
